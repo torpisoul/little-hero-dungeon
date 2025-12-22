@@ -52,7 +52,8 @@ async function getNextGameStep(userContent) {
             body: JSON.stringify({
                 messages: conversationHistory,
                 subject: subject,
-                age: document.getElementById('age').value
+                age: document.getElementById('age').value,
+                gameMode: document.getElementById('game-mode') ? document.getElementById('game-mode').value : 'child'
             })
         });
 
@@ -101,8 +102,22 @@ async function getNextGameStep(userContent) {
             const btn = document.createElement('button');
             btn.innerText = opt;
             btn.onclick = () => handleChoice(opt, gameData.correct_answer);
+
+            // Add Timer Logic
+            btn.disabled = true;
+            btn.classList.add('wait-mode'); // Optional: Add a class for styling
+
             optionsContainer.appendChild(btn);
         });
+
+        // Enable buttons after 2 seconds
+        setTimeout(() => {
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('wait-mode');
+            });
+        }, 2000);
 
         conversationHistory.push({ role: "assistant", content: JSON.stringify(gameData) });
 
