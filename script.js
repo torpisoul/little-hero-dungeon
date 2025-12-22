@@ -58,8 +58,14 @@ async function getNextGameStep(userContent) {
 
         if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
-        const gameData = await response.json();
-        console.log("Game Data received:", gameData);
+        let gameData = await response.json();
+        console.log("Raw response:", gameData);
+
+        // Handle if response is wrapped in an array
+        if (Array.isArray(gameData)) {
+            gameData = gameData[0];
+        }
+        console.log("Game Data:", gameData);
 
         // Validate response has required fields
         if (!gameData.story || !gameData.question || !gameData.options) {
