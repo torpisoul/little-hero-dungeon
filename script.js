@@ -14,10 +14,37 @@ const questionText = document.getElementById('question-text');
 const optionsContainer = document.getElementById('options-container');
 const block = document.getElementById('dynamic-block');
 const characterMouth = document.querySelector('.mouth');
+const subjectSelect = document.getElementById('subject');
+const adventureOptions = document.getElementById('adventure-options');
+
+// ===== Event Listeners =====
+// Toggle Adventure Options
+subjectSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'Adventure') {
+        adventureOptions.style.display = 'block';
+    } else {
+        adventureOptions.style.display = 'none';
+    }
+});
 
 // ===== Start Game =====
 startBtn.addEventListener('click', () => {
-    subject = document.getElementById('subject').value;
+    const rawSubject = document.getElementById('subject').value;
+
+    // Determine actual subject(s)
+    if (rawSubject === 'Adventure') {
+        const checkboxes = document.querySelectorAll('input[name="adv-subject"]:checked');
+        const selectedSubjects = Array.from(checkboxes).map(cb => cb.value);
+
+        if (selectedSubjects.length === 0) {
+            alert("Please select at least one subject for your adventure!");
+            return;
+        }
+        subject = selectedSubjects.join(', '); // Send as comma-separated string
+    } else {
+        subject = rawSubject;
+    }
+
     const age = document.getElementById('age').value;
 
     // Switch screens

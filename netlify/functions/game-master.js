@@ -25,6 +25,7 @@ exports.handler = async (event) => {
     const systemInstruction = `
     You are a Dungeon Master for a ${age}-year-old child. 
     Subject focus: ${subject}.
+    (Note: If 'Subject focus' contains multiple topics, randomly select ONE distinct topic from the list for the current challenge. Rotate topics frequently.)
     ${vocabInstruction}
     
     STRICT RULES:
