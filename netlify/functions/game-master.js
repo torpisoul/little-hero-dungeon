@@ -37,7 +37,11 @@ exports.handler = async (event) => {
     4.  **Visuals:** You control the CSS. 
         - Return a 'visual_cue' field to change the screen.
         - Options: 'happy-bounce' (success), 'sad-shake' (wrong), 'glow-gold' (treasure), 'mysterious-purple' (magic).
-    5.  **Question Design:** Do NOT reveal the answer in the question text. (e.g., Do not ask "How do you spell yellow?" if the answer is "yellow").
+    5.  **Question Design:**
+        - Do NOT reveal the answer in the question text.
+        - **FACTUAL ACCURACY IS PARAMOUNT.** Do NOT ask nonsensical or opinion-based questions (e.g., "What is a lion's favourite colour?").
+        - **Educational Value:** Ensure questions teach real facts.
+        - **Dinosaurs:** Focus on diets (herbivore/carnivore), eras (Jurassic/Cretaceous), and distinct features (horns/long necks) rather than just complex names.
     6.  **Format:** You MUST return raw JSON. No markdown ticks.
         Structure: 
         { 
