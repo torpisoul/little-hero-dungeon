@@ -6,8 +6,14 @@ exports.handler = async (event) => {
 
     const { messages, subject, age } = JSON.parse(event.body);
 
+    // Check API key
+    if (!process.env.GEMINI_API_KEY) {
+        console.error("GEMINI_API_KEY environment variable not set");
+        return { statusCode: 500, body: JSON.stringify({ error: "API key not configured" }) };
+    }
+
     // Initialize Gemini
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
     // The "Teacher" Personality & Game Logic
     const systemInstruction = `
@@ -36,7 +42,7 @@ exports.handler = async (event) => {
 
     try {
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash", // Fast & Cost-effective
+            model: "gemini-2.0-flash", // Updated model name
             systemInstruction: systemInstruction,
             generationConfig: { responseMimeType: "application/json" }
         });

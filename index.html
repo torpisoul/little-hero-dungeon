@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Hero Dungeon - Learn Through Adventure!</title>
+    <meta name="description" content="An educational adventure game where children learn curriculum topics through fun dungeon quests with an AI dungeon master.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header with Stars -->
+        <header class="game-header">
+            <div class="logo">
+                <span class="logo-icon">🏰</span>
+                <h1>Little Hero Dungeon</h1>
+            </div>
+            <div class="star-counter">
+                <span class="star-icon">⭐</span>
+                <span id="stars">0</span>
+            </div>
+        </header>
+
+        <!-- Setup Screen -->
+        <section id="setup-screen" class="screen active">
+            <div class="setup-card">
+                <h2>🗡️ Begin Your Quest!</h2>
+                <p class="setup-intro">Choose your adventure settings, brave hero!</p>
+                
+                <div class="form-group">
+                    <label for="age">How old are you?</label>
+                    <select id="age">
+                        <option value="5">5 years old</option>
+                        <option value="6">6 years old</option>
+                        <option value="7" selected>7 years old</option>
+                        <option value="8">8 years old</option>
+                        <option value="9">9 years old</option>
+                        <option value="10">10 years old</option>
+                        <option value="11">11 years old</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">What would you like to learn?</label>
+                    <select id="subject">
+                        <option value="Maths - Addition and Subtraction">🔢 Maths - Adding & Subtracting</option>
+                        <option value="Maths - Multiplication">✖️ Maths - Times Tables</option>
+                        <option value="English - Spelling">📝 English - Spelling</option>
+                        <option value="English - Grammar">📖 English - Grammar</option>
+                        <option value="Science - Animals">🦁 Science - Animals</option>
+                        <option value="Science - Space">🚀 Science - Space</option>
+                        <option value="History - Dinosaurs">🦖 History - Dinosaurs</option>
+                        <option value="Geography - Countries">🌍 Geography - Countries</option>
+                    </select>
+                </div>
+
+                <button id="start-btn" class="primary-btn">
+                    <span>⚔️ Start Adventure!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="game-screen" class="screen">
+            <div class="game-area">
+                <!-- Animated Character Block -->
+                <div id="dynamic-block" class="block-character">
+                    <div class="character-face">
+                        <div class="eyes">
+                            <span class="eye">👁️</span>
+                            <span class="eye">👁️</span>
+                        </div>
+                        <div class="mouth">😊</div>
+                    </div>
+                </div>
+
+                <!-- Story Display -->
+                <div class="story-box">
+                    <p id="story-text">Your adventure is about to begin...</p>
+                </div>
+
+                <!-- Question Display -->
+                <div class="question-box">
+                    <h3 id="question-text">Loading your first challenge...</h3>
+                </div>
+
+                <!-- Answer Options -->
+                <div id="options-container" class="options-grid">
+                    <!-- Buttons will be injected here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+/* ===== Base Styles & Variables ===== */
+:root {
+    --primary-purple: #6B4EE6;
+    --primary-pink: #E94E9A;
+    --gold: #FFD700;
+    --success-green: #4ADE80;
+    --sky-blue: #87CEEB;
+    --mysterious-purple: #9370DB;
+    --dark-bg: #1a1a2e;
+    --card-bg: #16213e;
+    --text-light: #ffffff;
+    --text-muted: #a0a0c0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fredoka', sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #0f0f23 100%);
+    min-height: 100vh;
+    color: var(--text-light);
+    overflow-x: hidden;
+}
+
+/* ===== Game Container ===== */
+.game-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Header ===== */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-pink) 100%);
+    border-radius: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(107, 78, 230, 0.3);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.star-counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.star-icon {
+    font-size: 1.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== Screens ===== */
+.screen {
+    display: none;
+    flex: 1;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Setup Screen ===== */
+.setup-card {
+    background: var(--card-bg);
+    border-radius: 30px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+.setup-card h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--gold) 0%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.setup-intro {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-group select:hover,
+.form-group select:focus {
+    border-color: var(--primary-purple);
+    outline: none;
+    box-shadow: 0 0 20px rgba(107, 78, 230, 0.3);
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 18px 30px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-pink) 100%);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(107, 78, 230, 0.4);
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(107, 78, 230, 0.5);
+}
+
+.primary-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* ===== Game Screen ===== */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+}
+
+/* ===== Animated Block Character ===== */
+.block-character {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #ff4d4d 0%, #ff6b6b 100%);
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 50px rgba(255, 77, 77, 0.4);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+}
+
+.character-face {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.eyes {
+    display: flex;
+    gap: 20px;
+    font-size: 1.8rem;
+}
+
+.mouth {
+    font-size: 2rem;
+}
+
+/* ===== Block Animation States ===== */
+.block-character.happy-bounce {
+    background: linear-gradient(135deg, var(--gold) 0%, #FFA500 100%) !important;
+    animation: happyBounce 0.6s ease-in-out;
+    box-shadow: 0 15px 50px rgba(255, 215, 0, 0.5);
+}
+
+.block-character.sad-shake {
+    background: linear-gradient(135deg, var(--sky-blue) 0%, #5DADE2 100%) !important;
+    animation: sadShake 0.5s ease-in-out;
+    box-shadow: 0 15px 50px rgba(135, 206, 235, 0.5);
+}
+
+.block-character.glow-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, #FFB347 100%) !important;
+    animation: glowGold 1s ease-in-out infinite;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.7);
+}
+
+.block-character.mysterious-purple {
+    background: linear-gradient(135deg, var(--mysterious-purple) 0%, #8B5CF6 100%) !important;
+    animation: mysteriousPulse 1.5s ease-in-out infinite;
+    box-shadow: 0 15px 50px rgba(147, 112, 219, 0.5);
+}
+
+.block-character.spinning {
+    animation: spin 1s linear infinite;
+}
+
+/* ===== Story & Question Boxes ===== */
+.story-box {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 25px 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.story-box p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.question-box {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1e2a4a 100%);
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid var(--primary-purple);
+    box-shadow: 0 10px 40px rgba(107, 78, 230, 0.2);
+}
+
+.question-box h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* ===== Answer Options ===== */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    width: 100%;
+}
+
+.options-grid button {
+    padding: 20px 25px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: inherit;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    background: var(--card-bg);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.options-grid button:hover {
+    border-color: var(--primary-purple);
+    background: rgba(107, 78, 230, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(107, 78, 230, 0.3);
+}
+
+.options-grid button:active {
+    transform: translateY(0);
+}
+
+/* ===== Keyframe Animations ===== */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+@keyframes happyBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    25% { transform: translateY(-30px) scale(1.1); }
+    50% { transform: translateY(-15px) scale(1.05); }
+    75% { transform: translateY(-20px) scale(1.08); }
+}
+
+@keyframes sadShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-15px) rotate(-5deg); }
+    40% { transform: translateX(15px) rotate(5deg); }
+    60% { transform: translateX(-10px) rotate(-3deg); }
+    80% { transform: translateX(10px) rotate(3deg); }
+}
+
+@keyframes glowGold {
+    0%, 100% { 
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes mysteriousPulse {
+    0%, 100% { 
+        box-shadow: 0 0 30px rgba(147, 112, 219, 0.5);
+        filter: hue-rotate(0deg);
+    }
+    50% { 
+        box-shadow: 0 0 60px rgba(147, 112, 219, 0.8);
+        filter: hue-rotate(20deg);
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 600px) {
+    .game-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+    
+    .setup-card {
+        padding: 25px;
+    }
+    
+    .block-character {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .question-box h3 {
+        font-size: 1.2rem;
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+}
