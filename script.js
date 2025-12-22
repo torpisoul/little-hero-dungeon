@@ -14,10 +14,37 @@ const questionText = document.getElementById('question-text');
 const optionsContainer = document.getElementById('options-container');
 const block = document.getElementById('dynamic-block');
 const characterMouth = document.querySelector('.mouth');
+const subjectSelect = document.getElementById('subject');
+const adventureOptions = document.getElementById('adventure-options');
+
+// ===== Event Listeners =====
+// Toggle Adventure Options
+subjectSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'Adventure') {
+        adventureOptions.style.display = 'block';
+    } else {
+        adventureOptions.style.display = 'none';
+    }
+});
 
 // ===== Start Game =====
 startBtn.addEventListener('click', () => {
-    subject = document.getElementById('subject').value;
+    const rawSubject = document.getElementById('subject').value;
+
+    // Determine actual subject(s)
+    if (rawSubject === 'Adventure') {
+        const checkboxes = document.querySelectorAll('input[name="adv-subject"]:checked');
+        const selectedSubjects = Array.from(checkboxes).map(cb => cb.value);
+
+        if (selectedSubjects.length === 0) {
+            alert("Please select at least one subject for your adventure!");
+            return;
+        }
+        subject = selectedSubjects.join(', '); // Send as comma-separated string
+    } else {
+        subject = rawSubject;
+    }
+
     const age = document.getElementById('age').value;
 
     // Switch screens
@@ -52,7 +79,8 @@ async function getNextGameStep(userContent) {
             body: JSON.stringify({
                 messages: conversationHistory,
                 subject: subject,
-                age: document.getElementById('age').value
+                age: document.getElementById('age').value,
+                gameMode: document.getElementById('game-mode') ? document.getElementById('game-mode').value : 'child'
             })
         });
 
@@ -101,8 +129,22 @@ async function getNextGameStep(userContent) {
             const btn = document.createElement('button');
             btn.innerText = opt;
             btn.onclick = () => handleChoice(opt, gameData.correct_answer);
+
+            // Add Timer Logic
+            btn.disabled = true;
+            btn.classList.add('wait-mode'); // Optional: Add a class for styling
+
             optionsContainer.appendChild(btn);
         });
+
+        // Enable buttons after 2 seconds
+        setTimeout(() => {
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('wait-mode');
+            });
+        }, 2000);
 
         conversationHistory.push({ role: "assistant", content: JSON.stringify(gameData) });
 

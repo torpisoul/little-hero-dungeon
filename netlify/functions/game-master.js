@@ -4,7 +4,7 @@ exports.handler = async (event) => {
     // Security: Only allow POST requests
     if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method Not Allowed" };
 
-    const { messages, subject, age } = JSON.parse(event.body);
+    const { messages, subject, age, gameMode } = JSON.parse(event.body);
 
     // Check API key
     if (!process.env.GEMINI_API_KEY) {
@@ -15,10 +15,18 @@ exports.handler = async (event) => {
     // Initialize Gemini
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+    // Determine Vocabulary Level
+    const isParentAssisted = gameMode === 'parent-child';
+    const vocabInstruction = isParentAssisted
+        ? "Vocabulary: Use richer, more complex vocabulary suitable for a parent reading to a child (e.g., 'magnificent', 'treacherous', 'illuminated')."
+        : "Vocabulary: Use simple, easy-to-read words suitable for a child reading alone.";
+
     // The "Teacher" Personality & Game Logic
     const systemInstruction = `
     You are a Dungeon Master for a ${age}-year-old child. 
     Subject focus: ${subject}.
+    (Note: If 'Subject focus' contains multiple topics, randomly select ONE distinct topic from the list for the current challenge. Rotate topics frequently.)
+    ${vocabInstruction}
     
     STRICT RULES:
     1.  **Language:** British English spelling ONLY (colour, favourite, honour).
@@ -29,7 +37,12 @@ exports.handler = async (event) => {
     4.  **Visuals:** You control the CSS. 
         - Return a 'visual_cue' field to change the screen.
         - Options: 'happy-bounce' (success), 'sad-shake' (wrong), 'glow-gold' (treasure), 'mysterious-purple' (magic).
-    5.  **Format:** You MUST return raw JSON. No markdown ticks.
+    5.  **Question Design:**
+        - Do NOT reveal the answer in the question text.
+        - **FACTUAL ACCURACY IS PARAMOUNT.** Do NOT ask nonsensical or opinion-based questions (e.g., "What is a lion's favourite colour?").
+        - **Educational Value:** Ensure questions teach real facts.
+        - **Dinosaurs:** Focus on diets (herbivore/carnivore), eras (Jurassic/Cretaceous), and distinct features (horns/long necks) rather than just complex names.
+    6.  **Format:** You MUST return raw JSON. No markdown ticks.
         Structure: 
         { 
           "story": "Short story text (max 2 sentences).", 
@@ -42,7 +55,7 @@ exports.handler = async (event) => {
 
     try {
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", // Updated model name
+            model: "gemini-2.5-flash-lite", // Updated model name
             systemInstruction: systemInstruction,
             generationConfig: { responseMimeType: "application/json" }
         });
