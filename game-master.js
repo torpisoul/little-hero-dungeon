@@ -1,0 +1,66 @@
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+exports.handler = async (event) => {
+    // Security: Only allow POST requests
+    if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method Not Allowed" };
+
+    const { messages, subject, age } = JSON.parse(event.body);
+
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+
+    // The "Teacher" Personality & Game Logic
+    const systemInstruction = `
+    You are a Dungeon Master for a ${age}-year-old child. 
+    Subject focus: ${subject}.
+    
+    STRICT RULES:
+    1.  **Language:** British English spelling ONLY (colour, favourite, honour).
+    2.  **Tone:** Enthusiastic, like the show 'Numberblocks' or 'Alphablocks'.
+    3.  **Psychology:** - Never say "You failed."
+        - If they get it wrong, say "Not quite! Let's try this instead..."
+        - Always praise effort ("Good try!", "Super bravery!").
+    4.  **Visuals:** You control the CSS. 
+        - Return a 'visual_cue' field to change the screen.
+        - Options: 'happy-bounce' (success), 'sad-shake' (wrong), 'glow-gold' (treasure), 'mysterious-purple' (magic).
+    5.  **Format:** You MUST return raw JSON. No markdown ticks.
+        Structure: 
+        { 
+          "story": "Short story text (max 2 sentences).", 
+          "question": "The challenge question.", 
+          "options": ["Option A", "Option B", "Option C"], 
+          "correct_answer": "Option A", 
+          "visual_cue": "happy-bounce" 
+        }
+  `;
+
+    try {
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash", // Fast & Cost-effective
+            systemInstruction: systemInstruction,
+            generationConfig: { responseMimeType: "application/json" }
+        });
+
+        // Convert Frontend messages to Gemini History Format
+        // We take all previous messages as history, and the last one as the current prompt.
+        const lastUserMessage = messages[messages.length - 1].content;
+
+        const history = messages.slice(0, -1).map(msg => ({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }]
+        }));
+
+        const chat = model.startChat({ history: history });
+        const result = await chat.sendMessage(lastUserMessage);
+        const text = result.response.text();
+
+        return {
+            statusCode: 200,
+            body: text // Returns the JSON string directly
+        };
+
+    } catch (error) {
+        console.error("Gemini Error:", error);
+        return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+    }
+};
