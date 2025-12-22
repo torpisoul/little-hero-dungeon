@@ -51,7 +51,7 @@ exports.handler = async (event) => {
 
     try {
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash-lite-001", // Updated model name
+            model: "gemini-2.5-flash-lite", // Updated model name
             systemInstruction: systemInstruction,
             generationConfig: { responseMimeType: "application/json" }
         });
